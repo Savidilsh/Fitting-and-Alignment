@@ -1,8 +1,9 @@
+# q2_ransac.py
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy import linalg
 
-# --- Data Generation ---
+# --- Data Generation (As per assignment) ---
 np.random.seed(0)
 N, r_gt, x0_gt, y0_gt = 100, 10, 2, 3
 half_n = N // 2
@@ -17,7 +18,7 @@ X_line = np.hstack((x_line_pts.reshape(half_n, 1), y_line_pts.reshape(half_n, 1)
 X = np.vstack((X_circ, X_line))
 
 # --- RANSAC Implementations ---
-def fit_line_ransac(data, threshold=0.5, n_iterations=1000):
+def fit_line_ransac(data, threshold=0.6, n_iterations=1000):
     best_inliers_idx = []
     for _ in range(n_iterations):
         p1, p2 = data[np.random.choice(data.shape[0], 2, replace=False)]
@@ -37,7 +38,7 @@ def fit_line_ransac(data, threshold=0.5, n_iterations=1000):
     d = -(a * centroid[0] + b * centroid[1])
     return (a, b, d), best_inliers_idx
 
-def fit_circle_ransac(data, threshold=0.8, n_iterations=1000):
+def fit_circle_ransac(data, threshold=1.5, n_iterations=1000):
     best_inliers_idx, best_model = [], None
     for _ in range(n_iterations):
         p1, p2, p3 = data[np.random.choice(data.shape[0], 3, replace=False)]
@@ -52,25 +53,30 @@ def fit_circle_ransac(data, threshold=0.8, n_iterations=1000):
             best_inliers_idx, best_model = inliers_idx, (xc, yc, r)
     return best_model, best_inliers_idx
 
-# --- Execution & Visualization ---
+# --- Execution ---
 line_model, line_inliers_idx = fit_line_ransac(X)
 X_remnant = np.delete(X, line_inliers_idx, axis=0)
 circle_model, circle_inliers_idx_local = fit_circle_ransac(X_remnant)
-# Find original indices for circle inliers
 all_indices = np.arange(X.shape[0])
 remnant_indices = np.delete(all_indices, line_inliers_idx)
 circle_inliers_idx = remnant_indices[circle_inliers_idx_local]
 
+print(" RANSAC Fitting Results ")
+print(f"Line Model: a={line_model[0]:.2f}, b={line_model[1]:.2f}, d={line_model[2]:.2f}")
+print(f"Circle Model: x0={circle_model[0]:.2f}, y0={circle_model[1]:.2f}, r={circle_model[2]:.2f}")
+
+# --- Visualization ---
 fig, ax = plt.subplots(1, 1, figsize=(8, 8))
-ax.plot(X[:, 0], X[:, 1], '.', color='#17becf', label='All points')
-ax.plot(X[line_inliers_idx, 0], X[line_inliers_idx, 1], 'o', color='#98df8a', label='Line Inliers')
-ax.plot(X[circle_inliers_idx, 0], X[circle_inliers_idx, 1], 'o', color='#1f77b4', label='Circle Inliers')
+ax.plot(X_line[:, 0], X_line[:, 1], 'o', label='Line Points')
+ax.plot(X_circ[:, 0], X_circ[:, 1], 'o', label='Circle Points')
+ax.plot(X[line_inliers_idx, 0], X[line_inliers_idx, 1], 'o', markersize=3, label='Line Inliers')
+ax.plot(X[circle_inliers_idx, 0], X[circle_inliers_idx, 1], 'o', markersize=3, label='Circle Inliers')
 a, b, d = line_model
 x_vals = np.array(ax.get_xlim())
 y_vals = (-a * x_vals - d) / b
-ax.plot(x_vals, y_vals, '-', color='#9467bd', label='RANSAC Line', linewidth=2)
+ax.plot(x_vals, y_vals, '-', color='red', label='Estimated Line', linewidth=2)
 xc, yc, r = circle_model
-ax.add_patch(plt.Circle((xc, yc), r, color='#d62728', fill=False, label='RANSAC Circle', linewidth=2))
+ax.add_patch(plt.Circle((xc, yc), r, color='blue', fill=False, label='Estimated Circle', linewidth=2))
 ax.set_aspect('equal', adjustable='box')
 ax.legend()
 plt.savefig('ransac_fit.png', bbox_inches='tight')
