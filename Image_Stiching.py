@@ -1,38 +1,37 @@
-import cv2
+import cv2 as cv
 import numpy as np
+import matplotlib.pyplot as plt
 
-def stitch_images(img1_path, img5_path):
-    img1 = cv2.imread(img1_path) # left image
-    img5 = cv2.imread(img5_path) # right image (reference)
+def sift_pipeline(img1_path, img2_path):
+    img1 = cv.imread(img1_path)
+    img2 = cv.imread(img2_path)
+    gray1 = cv.cvtColor(img1, cv.COLOR_BGR2GRAY)
+    gray2 = cv.cvtColor(img2, cv.COLOR_BGR2GRAY)
+    sift = cv.SIFT_create()
+    kp1, des1 = sift.detectAndCompute(gray1, None)
+    kp2, des2 = sift.detectAndCompute(gray2, None)
 
-    sift = cv2.SIFT_create()
-    kp1, des1 = sift.detectAndCompute(img1, None)
-    kp5, des5 = sift.detectAndCompute(img5, None)
+    cv.imwrite('figures/q4_keypoints_img1.png', cv.drawKeypoints(img1, kp1, None))
+    cv.imwrite('figures/q4_keypoints_img2.png', cv.drawKeypoints(img2, kp2, None))
 
-    # Use FLANN matcher and Lowe's ratio test for good matches
-    matcher = cv2.FlannBasedMatcher(dict(algorithm=1, trees=5), dict(checks=50))
-    matches = matcher.knnMatch(des1, des5, k=2)
-    good_matches = [m for m, n in matches if m.distance < 0.7 * n.distance]
+    bf = cv.BFMatcher(cv.NORM_L2, crossCheck=False)
+    matches_all = bf.knnMatch(des1, des2, k=2)
+    all_matches_img = cv.drawMatchesKnn(img1, kp1, img2, kp2, matches_all[:50], None, flags=2)
+    cv.imwrite('figures/q4_initial_matches.png', all_matches_img)
 
-    src_pts = np.float32([kp1[m.queryIdx].pt for m in good_matches]).reshape(-1, 1, 2)
-    dst_pts = np.float32([kp5[m.trainIdx].pt for m in good_matches]).reshape(-1, 1, 2)
+    good = [m for m, n in matches_all if m.distance < 0.75 * n.distance]
+    good_img = cv.drawMatches(img1, kp1, img2, kp2, good, None, flags=2)
+    cv.imwrite('figures/q4_good_matches.png', good_img)
 
-    # Compute homography with OpenCV's RANSAC
-    H, _ = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC, 5.0)
-    print("--- Computed Homography Matrix ---")
-    print(H)
+    if len(good) > 4:
+        src = np.float32([kp1[m.queryIdx].pt for m in good]).reshape(-1, 1, 2)
+        dst = np.float32([kp2[m.trainIdx].pt for m in good]).reshape(-1, 1, 2)
+        H, mask = cv.findHomography(src, dst, cv.RANSAC, 5.0)
+        result = cv.warpPerspective(img1, H, (img1.shape[1] + img2.shape[1], img1.shape[0]))
+        result[0:img2.shape[0], 0:img2.shape[1]] = img2
+        cv.imwrite('figures/q4_stitched_panorama.png', result)
 
-    # Stitch images
-    h1, w1 = img1.shape[:2]
-    h5, w5 = img5.shape[:2]
-    result = cv2.warpPerspective(img1, H, (w1 + w5, h5))
-    result[0:h5, 0:w5] = img5 # Place the reference image on the left
+    print("✅ All Q4 figures saved in 'figures/' folder")
 
-    cv2.imshow("Stitched Image", result)
-    cv2.imwrite('stitching_result.png', result)
-    print("Result saved as 'stitching_result.png'. Press any key to exit.")
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-
-# Make sure 'img1.ppm' and 'img5.ppm' are in the same directory
-stitch_images('graf/img1.ppm', 'graf/img5.ppm')
+if __name__ == "__main__":
+    sift_pipeline('graf/img1.ppm', 'graf/img5.ppm')

@@ -1,83 +1,113 @@
-# q2_ransac.py
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy import linalg
 
-# --- Data Generation (As per assignment) ---
-np.random.seed(0)
-N, r_gt, x0_gt, y0_gt = 100, 10, 2, 3
-half_n = N // 2
-t = np.random.uniform(0, 2 * np.pi, half_n)
-n = (r_gt / 16) * np.random.randn(half_n)
-x_circ, y_circ = x0_gt + (r_gt + n) * np.cos(t), y0_gt + (r_gt + n) * np.sin(t)
-X_circ = np.hstack((x_circ.reshape(half_n, 1), y_circ.reshape(half_n, 1)))
-m_gt, b_gt = -1, 2
-x_line_pts = np.linspace(-12, 12, half_n)
-y_line_pts = m_gt * x_line_pts + b_gt + np.random.randn(half_n)
-X_line = np.hstack((x_line_pts.reshape(half_n, 1), y_line_pts.reshape(half_n, 1)))
-X = np.vstack((X_circ, X_line))
+def line_distance(params, X):
+    a, b, d = params
+    return np.abs(a * X[:, 0] + b * X[:, 1] + d) / np.sqrt(a**2 + b**2)
 
-# --- RANSAC Implementations ---
-def fit_line_ransac(data, threshold=0.6, n_iterations=1000):
-    best_inliers_idx = []
-    for _ in range(n_iterations):
-        p1, p2 = data[np.random.choice(data.shape[0], 2, replace=False)]
+def ransac_line(X, num_iterations=1000, threshold=0.6, min_inliers=25):
+    best_inliers = np.empty((0, 2))
+    best_params = None
+    n = len(X)
+    for _ in range(num_iterations):
+        idx = np.random.choice(n, 2, replace=False)
+        p1, p2 = X[idx]
         a, b = p2[1] - p1[1], p1[0] - p2[0]
-        norm = np.sqrt(a**2 + b**2)
-        a, b = a / norm, b / norm
         d = -(a * p1[0] + b * p1[1])
-        distances = np.abs(a * data[:, 0] + b * data[:, 1] + d)
-        inliers_idx = np.where(distances < threshold)[0]
-        if len(inliers_idx) > len(best_inliers_idx):
-            best_inliers_idx = inliers_idx
-    # Refit model to all inliers
-    inlier_points = data[best_inliers_idx]
-    centroid = np.mean(inlier_points, axis=0)
-    _, _, Vt = linalg.svd(inlier_points - centroid)
-    a, b = Vt[1]
-    d = -(a * centroid[0] + b * centroid[1])
-    return (a, b, d), best_inliers_idx
+        norm = np.sqrt(a**2 + b**2)
+        if norm == 0:
+            continue
+        a, b, d = a / norm, b / norm, d / norm
+        dist = line_distance([a, b, d], X)
+        inliers = X[dist < threshold]
+        if len(inliers) > len(best_inliers) and len(inliers) >= min_inliers:
+            best_inliers = inliers
+            best_params = [a, b, d]
+    return best_params, best_inliers
 
-def fit_circle_ransac(data, threshold=1.5, n_iterations=1000):
-    best_inliers_idx, best_model = [], None
-    for _ in range(n_iterations):
-        p1, p2, p3 = data[np.random.choice(data.shape[0], 3, replace=False)]
-        A = np.array([[2*(p2[0]-p1[0]), 2*(p2[1]-p1[1])], [2*(p3[0]-p2[0]), 2*(p3[1]-p2[1])]])
-        B = np.array([p2[0]**2+p2[1]**2-p1[0]**2-p1[1]**2, p3[0]**2+p3[1]**2-p2[0]**2-p2[1]**2])
-        try: xc, yc = np.linalg.solve(A, B)
-        except np.linalg.LinAlgError: continue
-        r = np.sqrt((p1[0]-xc)**2 + (p1[1]-yc)**2)
-        distances = np.abs(np.sqrt((data[:, 0]-xc)**2 + (data[:, 1]-yc)**2) - r)
-        inliers_idx = np.where(distances < threshold)[0]
-        if len(inliers_idx) > len(best_inliers_idx):
-            best_inliers_idx, best_model = inliers_idx, (xc, yc, r)
-    return best_model, best_inliers_idx
+def circle_distance(params, X):
+    x0, y0, r = params
+    return np.abs(np.sqrt((X[:, 0] - x0)**2 + (X[:, 1] - y0)**2) - r)
 
-# --- Execution ---
-line_model, line_inliers_idx = fit_line_ransac(X)
-X_remnant = np.delete(X, line_inliers_idx, axis=0)
-circle_model, circle_inliers_idx_local = fit_circle_ransac(X_remnant)
-all_indices = np.arange(X.shape[0])
-remnant_indices = np.delete(all_indices, line_inliers_idx)
-circle_inliers_idx = remnant_indices[circle_inliers_idx_local]
+def ransac_circle(X, num_iterations=1000, threshold=1.5, min_inliers=30):
+    best_inliers = np.empty((0, 2))
+    best_params = None
+    n = len(X)
+    for _ in range(num_iterations):
+        idx = np.random.choice(n, 3, replace=False)
+        p1, p2, p3 = X[idx]
+        A = np.array([[p1[0], p1[1], 1],
+                      [p2[0], p2[1], 1],
+                      [p3[0], p3[1], 1]])
+        B = np.array([[-(p1[0]**2 + p1[1]**2)],
+                      [-(p2[0]**2 + p2[1]**2)],
+                      [-(p3[0]**2 + p3[1]**2)]])
+        if np.linalg.matrix_rank(A) < 3:
+            continue
+        C = np.linalg.solve(A, B)
+        x0, y0 = -0.5 * C[0, 0], -0.5 * C[1, 0]
+        r = np.sqrt((x0**2 + y0**2) - C[2, 0])
+        dist = circle_distance([x0, y0, r], X)
+        inliers = X[dist < threshold]
+        if len(inliers) > len(best_inliers) and len(inliers) >= min_inliers:
+            best_inliers = inliers
+            best_params = [x0, y0, r]
+    return best_params, best_inliers
 
-print(" RANSAC Fitting Results ")
-print(f"Line Model: a={line_model[0]:.2f}, b={line_model[1]:.2f}, d={line_model[2]:.2f}")
-print(f"Circle Model: x0={circle_model[0]:.2f}, y0={circle_model[1]:.2f}, r={circle_model[2]:.2f}")
 
-# --- Visualization ---
-fig, ax = plt.subplots(1, 1, figsize=(8, 8))
-ax.plot(X_line[:, 0], X_line[:, 1], 'o', label='Line Points')
-ax.plot(X_circ[:, 0], X_circ[:, 1], 'o', label='Circle Points')
-ax.plot(X[line_inliers_idx, 0], X[line_inliers_idx, 1], 'o', markersize=3, label='Line Inliers')
-ax.plot(X[circle_inliers_idx, 0], X[circle_inliers_idx, 1], 'o', markersize=3, label='Circle Inliers')
-a, b, d = line_model
-x_vals = np.array(ax.get_xlim())
-y_vals = (-a * x_vals - d) / b
-ax.plot(x_vals, y_vals, '-', color='red', label='Estimated Line', linewidth=2)
-xc, yc, r = circle_model
-ax.add_patch(plt.Circle((xc, yc), r, color='blue', fill=False, label='Estimated Circle', linewidth=2))
+np.random.seed(0)
+N = 120
+half = N // 2
+
+# Circle points
+r_true, x0_true, y0_true = 10, 2, 3
+theta = np.linspace(0, 2 * np.pi, half)
+x_circ = x0_true + (r_true + np.random.randn(half) * 0.5) * np.cos(theta)
+y_circ = y0_true + (r_true + np.random.randn(half) * 0.5) * np.sin(theta)
+X_circ = np.c_[x_circ, y_circ]
+
+# Line points
+m_true, c_true = -1, 2
+x_line = np.linspace(-12, 12, half)
+y_line = m_true * x_line + c_true + np.random.randn(half)
+X_line = np.c_[x_line, y_line]
+
+X = np.vstack((X_circ, X_line))
+np.random.shuffle(X)
+
+best_line_params, line_inliers = ransac_line(X)
+if best_line_params is None:
+    best_line_params, line_inliers = ransac_line(X, threshold=1.0, min_inliers=20)
+
+remaining = np.array([p for p in X if not any(np.allclose(p, q) for q in line_inliers)])
+best_circle_params, circle_inliers = ransac_circle(remaining)
+
+fig, ax = plt.subplots(figsize=(8, 8))
+ax.scatter(X[:, 0], X[:, 1], s=10, color='gray', label='All Points')
+
+ax.scatter(line_inliers[:, 0], line_inliers[:, 1], s=15, color='red', label='Line Inliers')
+if circle_inliers.size > 0:
+    ax.scatter(circle_inliers[:, 0], circle_inliers[:, 1], s=15, color='blue', label='Circle Inliers')
+
+ax.add_patch(plt.Circle((x0_true, y0_true), r_true, color='limegreen', fill=False, linestyle='--', label='GT Circle'))
+x_vals = np.linspace(-12, 12, 100)
+ax.plot(x_vals, m_true * x_vals + c_true, 'g--', label='GT Line')
+
+if best_line_params is not None:
+    a, b, d = best_line_params
+    ax.plot(x_vals, -(a * x_vals + d) / b, 'r-', label='Estimated Line')
+if best_circle_params is not None:
+    x0, y0, r = best_circle_params
+    ax.add_patch(plt.Circle((x0, y0), r, color='b', fill=False, label='Estimated Circle'))
+
 ax.set_aspect('equal', adjustable='box')
 ax.legend()
-plt.savefig('ransac_fit.png', bbox_inches='tight')
+ax.set_title("RANSAC Line and Circle Fitting")
+plt.tight_layout()
+plt.savefig('figures/q2_ransac_final.png', dpi=300)
 plt.show()
+
+if best_line_params is not None:
+    print(f"Estimated Line: a={a:.3f}, b={b:.3f}, d={d:.3f}")
+if best_circle_params is not None:
+    print(f"Estimated Circle: x0={x0:.3f}, y0={y0:.3f}, r={r:.3f}")

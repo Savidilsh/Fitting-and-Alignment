@@ -1,38 +1,41 @@
-# q1_sunflowers.py
+# q1_sunflower_blob.py
+
 import cv2
 import numpy as np
-import matplotlib.pyplot as plt
 from skimage.feature import blob_log
+import matplotlib.pyplot as plt
 
-def detect_and_visualize_sunflowers(image_path):
-    img_color = cv2.imread(image_path, cv2.IMREAD_REDUCED_COLOR_4)
-    gray_img = cv2.cvtColor(img_color, cv2.COLOR_BGR2GRAY)
+def detect_sunflower_centers(img_path, out_path='figures/q1_sunflower.png'):
+    img = cv2.imread(img_path, cv2.IMREAD_REDUCED_COLOR_4)
+    if img is None:
+        raise FileNotFoundError(f"Image {img_path} not found")
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    inv = cv2.bitwise_not(gray)
     
-    # Use blob_log which is an efficient implementation of Laplacian of Gaussian
-    blobs = blob_log(gray_img, min_sigma=10, max_sigma=35, num_sigma=10, threshold=0.08)
-    blobs[:, 2] = blobs[:, 2] * np.sqrt(2) # Convert sigma to radius
-
-    # For visualization, create a BGR image from grayscale to draw color circles
-    img_for_drawing = cv2.cvtColor(gray_img, cv2.COLOR_GRAY2BGR)
-
-    for blob in blobs:
-        y, x, r = map(int, blob)
-        cv2.circle(img_for_drawing, (x, y), r, (0, 0, 255), 2) # Draw red circle
-
-    cv2.imwrite('sunflower_detection_result.png', img_for_drawing)
-    print("Result saved as 'sunflower_detection_result.png'")
+    blobs = blob_log(inv, min_sigma=3, max_sigma=12, num_sigma=30, threshold=0.3)
     
-    # Report the parameters of the largest 5 circles
-    blobs_sorted = sorted(blobs, key=lambda b: b[2], reverse=True)
-    print("\n--- Top 5 Largest Sunflower Detections ---")
-    print("Sigma range used: 10 to 35")
-    for i, blob in enumerate(blobs_sorted[:5]):
-        y, x, r = map(int, blob)
-        print(f"{i+1}. Center=(y:{y}, x:{x}), Radius={r}")
-        
-    cv2.imshow('Sunflower Detection', img_for_drawing)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    h = gray.shape[0]
+    # Filter to lower part of image (field area)
+    blobs2 = [b for b in blobs if b[0] > h * 0.4]
+    blobs2.sort(key=lambda b: b[2], reverse=True)
+    top = blobs2[:10]
+    
+    draw = cv2.cvtColor(gray, cv2.COLOR_GRAY2BGR)
+    for (y, x, s) in top:
+        r = int(s * np.sqrt(2))
+        cv2.circle(draw, (int(x), int(y)), r, (0, 0, 255), 1)
+    
+    cv2.imwrite(out_path, draw)
+    print("Saved:", out_path)
+    
+    # also show via matplotlib
+    plt.figure(figsize=(8, 8))
+    plt.imshow(cv2.cvtColor(draw, cv2.COLOR_BGR2RGB))
+    plt.axis('off')
+    plt.title("Detected Sunflowers (top 10)")
+    plt.tight_layout()
+    plt.show()
+
 
 if __name__ == '__main__':
-    detect_and_visualize_sunflowers('the_berry_farms_sunflower_field.jpeg')
+    detect_sunflower_centers('the_berry_farms_sunflower_field.jpeg')
