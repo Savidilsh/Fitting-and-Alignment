@@ -1,5 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from pathlib import Path
+
+# Ensure figures directory exists
+FIG_DIR = Path(__file__).resolve().parent.parent / 'figures'
+FIG_DIR.mkdir(exist_ok=True)
 
 def line_distance(params, X):
     a, b, d = params
@@ -73,6 +78,18 @@ y_line = m_true * x_line + c_true + np.random.randn(half)
 X_line = np.c_[x_line, y_line]
 
 X = np.vstack((X_circ, X_line))
+
+# Save a plot of the noisy data points (before shuffling) for the report
+plt.figure(figsize=(6, 6))
+plt.scatter(X_circ[:, 0], X_circ[:, 1], s=10, color='blue', label='Circle points')
+plt.scatter(X_line[:, 0], X_line[:, 1], s=10, color='red', label='Line points')
+plt.gca().set_aspect('equal', adjustable='box')
+plt.title('Noisy synthetic data (circle + line)')
+plt.legend()
+plt.tight_layout()
+plt.savefig(str(FIG_DIR / 'q2_noisy_data.png'), dpi=200)
+plt.close()
+
 np.random.shuffle(X)
 
 best_line_params, line_inliers = ransac_line(X)

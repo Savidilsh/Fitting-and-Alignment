@@ -1,37 +1,116 @@
 import cv2 as cv
 import numpy as np
+import cv2 as cv
+import numpy as np
 import matplotlib.pyplot as plt
+from pathlib import Path
 
-def sift_pipeline(img1_path, img2_path):
-    img1 = cv.imread(img1_path)
-    img2 = cv.imread(img2_path)
-    gray1 = cv.cvtColor(img1, cv.COLOR_BGR2GRAY)
-    gray2 = cv.cvtColor(img2, cv.COLOR_BGR2GRAY)
+# Resolve project paths
+SCRIPT_DIR = Path(__file__).resolve().parent
+ROOT = SCRIPT_DIR.parent
+DATA_DIR = ROOT / 'graf'
+FIG_DIR = ROOT / 'figures'
+FIG_DIR.mkdir(exist_ok=True)
+
+
+def stitch_images(img1, img5, H):
+    """Stitch img1 onto img5 using homography H (img1 -> img5)."""
+    h1, w1 = img1.shape[:2]
+    h5, w5 = img5.shape[:2]
+
+    # corners of img1
+    corners1 = np.float32([[0, 0], [w1, 0], [w1, h1], [0, h1]]).reshape(-1, 1, 2)
+    corners1_transformed = cv.perspectiveTransform(corners1, H)
+
+    # corners of img5
+    corners5 = np.float32([[0, 0], [w5, 0], [w5, h5], [0, h5]]).reshape(-1, 1, 2)
+    all_corners = np.concatenate([corners5, corners1_transformed], axis=0)
+
+    x_min, y_min = np.int32(all_corners.min(axis=0).ravel() - 0.5)
+    x_max, y_max = np.int32(all_corners.max(axis=0).ravel() + 0.5)
+
+    # translation
+    translation = np.array([[1, 0, -x_min], [0, 1, -y_min], [0, 0, 1]])
+
+    output_size = (x_max - x_min, y_max - y_min)
+    warped_img1 = cv.warpPerspective(img1, translation @ H, output_size)
+
+    # create result and paste img5
+    result = warped_img1.copy()
+    tx, ty = -x_min, -y_min
+    result[ty:ty+h5, tx:tx+w5] = img5
+
+    return result
+
+
+def run_stitch(imgA_path, imgB_path, save_prefix='q4'):
+    imgA = cv.imread(str(imgA_path))
+    imgB = cv.imread(str(imgB_path))
+    if imgA is None or imgB is None:
+        raise FileNotFoundError(f"Could not read images: {imgA_path}, {imgB_path}")
+
+    grayA = cv.cvtColor(imgA, cv.COLOR_BGR2GRAY)
+    grayB = cv.cvtColor(imgB, cv.COLOR_BGR2GRAY)
+
     sift = cv.SIFT_create()
-    kp1, des1 = sift.detectAndCompute(gray1, None)
-    kp2, des2 = sift.detectAndCompute(gray2, None)
+    kpA, desA = sift.detectAndCompute(grayA, None)
+    kpB, desB = sift.detectAndCompute(grayB, None)
 
-    cv.imwrite('figures/q4_keypoints_img1.png', cv.drawKeypoints(img1, kp1, None))
-    cv.imwrite('figures/q4_keypoints_img2.png', cv.drawKeypoints(img2, kp2, None))
+    # save keypoint visualisations
+    cv.imwrite(str(FIG_DIR / f"{save_prefix}_keypoints_img1.png"), cv.drawKeypoints(imgA, kpA, None))
+    cv.imwrite(str(FIG_DIR / f"{save_prefix}_keypoints_img2.png"), cv.drawKeypoints(imgB, kpB, None))
 
+    # matching
     bf = cv.BFMatcher(cv.NORM_L2, crossCheck=False)
-    matches_all = bf.knnMatch(des1, des2, k=2)
-    all_matches_img = cv.drawMatchesKnn(img1, kp1, img2, kp2, matches_all[:50], None, flags=2)
-    cv.imwrite('figures/q4_initial_matches.png', all_matches_img)
+    knn = bf.knnMatch(desA, desB, k=2)
 
-    good = [m for m, n in matches_all if m.distance < 0.75 * n.distance]
-    good_img = cv.drawMatches(img1, kp1, img2, kp2, good, None, flags=2)
-    cv.imwrite('figures/q4_good_matches.png', good_img)
+    # draw initial few knn matches for inspection
+    knn_for_draw = [m for m in knn[:50]]
+    all_matches_img = cv.drawMatchesKnn(imgA, kpA, imgB, kpB, knn_for_draw, None, flags=cv.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
+    cv.imwrite(str(FIG_DIR / f"{save_prefix}_initial_matches.png"), all_matches_img)
 
-    if len(good) > 4:
-        src = np.float32([kp1[m.queryIdx].pt for m in good]).reshape(-1, 1, 2)
-        dst = np.float32([kp2[m.trainIdx].pt for m in good]).reshape(-1, 1, 2)
-        H, mask = cv.findHomography(src, dst, cv.RANSAC, 5.0)
-        result = cv.warpPerspective(img1, H, (img1.shape[1] + img2.shape[1], img1.shape[0]))
-        result[0:img2.shape[0], 0:img2.shape[1]] = img2
-        cv.imwrite('figures/q4_stitched_panorama.png', result)
+    # ratio test
+    good = []
+    for pair in knn:
+        if len(pair) < 2:
+            continue
+        m, n = pair
+        if m.distance < 0.75 * n.distance:
+            good.append(m)
 
-    print("✅ All Q4 figures saved in 'figures/' folder")
+    good_img = cv.drawMatches(imgA, kpA, imgB, kpB, good, None, flags=cv.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
+    cv.imwrite(str(FIG_DIR / f"{save_prefix}_good_matches.png"), good_img)
 
-if __name__ == "__main__":
-    sift_pipeline('graf/img1.ppm', 'graf/img5.ppm')
+    if len(good) < 4:
+        raise RuntimeError("Not enough good matches to compute homography")
+
+    src_pts = np.float32([kpA[m.queryIdx].pt for m in good]).reshape(-1, 1, 2)
+    dst_pts = np.float32([kpB[m.trainIdx].pt for m in good]).reshape(-1, 1, 2)
+
+    H, mask = cv.findHomography(src_pts, dst_pts, cv.RANSAC, 5.0)
+    if H is None:
+        raise RuntimeError("cv.findHomography failed to find a homography")
+
+    # stitch
+    result = stitch_images(imgA, imgB, H)
+    cv.imwrite(str(FIG_DIR / f"{save_prefix}_stitched_panorama.png"), result)
+    cv.imwrite(str(ROOT / f"stitched_image.jpg"), result)
+
+    print(f"Saved figures to {FIG_DIR} and stitched image to {ROOT / 'stitched_image.jpg'}")
+
+    # optionally show with matplotlib
+    try:
+        plt.figure(figsize=(12, 8))
+        plt.imshow(cv.cvtColor(result, cv.COLOR_BGR2RGB))
+        plt.axis('off')
+        plt.title('Stitched panorama')
+        plt.tight_layout()
+        plt.show()
+    except Exception:
+        pass
+
+
+if __name__ == '__main__':
+    img1_path = DATA_DIR / 'img1.ppm'
+    img5_path = DATA_DIR / 'img5.ppm'
+    run_stitch(img1_path, img5_path)
