@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.10.13)  14 OCT 2025 15:13
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.10.13)  15 OCT 2025 05:42
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -436,16 +436,16 @@ File: images/q3_code.png Graphic file (type png)
 <use images/q3_code.png>
 Package pdftex.def Info: images/q3_code.png  used on input line 109.
 (pdftex.def)             Requested size: 149.94484pt x 105.38898pt.
-<images/bill_board.png, id=53, 839.2956pt x 472.164pt>
-File: images/bill_board.png Graphic file (type png)
-<use images/bill_board.png>
-Package pdftex.def Info: images/bill_board.png  used on input line 113.
-(pdftex.def)             Requested size: 149.94484pt x 84.35184pt.
-<images/dog.png, id=54, 475.7775pt x 266.9975pt>
-File: images/dog.png Graphic file (type png)
-<use images/dog.png>
-Package pdftex.def Info: images/dog.png  used on input line 117.
-(pdftex.def)             Requested size: 149.94484pt x 84.14539pt.
+<car_on_billboard.png, id=53, 3497.065pt x 1967.35pt>
+File: car_on_billboard.png Graphic file (type png)
+<use car_on_billboard.png>
+Package pdftex.def Info: car_on_billboard.png  used on input line 113.
+(pdftex.def)             Requested size: 149.94484pt x 84.35425pt.
+<dog_on_tv.png, id=54, 475.7775pt x 316.18124pt>
+File: dog_on_tv.png Graphic file (type png)
+<use dog_on_tv.png>
+Package pdftex.def Info: dog_on_tv.png  used on input line 117.
+(pdftex.def)             Requested size: 149.94484pt x 99.64586pt.
  [2 <./images/q2_1_code.png> <./images/q2_2_code.png> <./figures/q2_noisy_data.png> <./figures/q2_ransac_final.png>]
 <figures/q4_keypoints_img1.png, id=68, 803.0pt x 642.4pt>
 File: figures/q4_keypoints_img1.png Graphic file (type png)
@@ -472,7 +472,7 @@ File: figures/q4_stitched_panorama.png Graphic file (type png)
 <use figures/q4_stitched_panorama.png>
 Package pdftex.def Info: figures/q4_stitched_panorama.png  used on input line 136.
 (pdftex.def)             Requested size: 222.5038pt x 177.99855pt.
- [3 <./images/q3_code.png> <./images/bill_board.png> <./images/dog.png> <./figures/q4_keypoints_img1.png (PNG copy)> <./figures/q4_keypoints_img2.png (PNG copy)> <./figures/q4_initial_matches.png (PNG copy)> <./figures/q4_good_matches.png (PNG copy)> <./figures/q4_stitched_panorama.png (PNG copy)>] [4] (report.aux)
+ [3 <./images/q3_code.png> <./car_on_billboard.png (PNG copy)> <./dog_on_tv.png (PNG copy)> <./figures/q4_keypoints_img1.png (PNG copy)> <./figures/q4_keypoints_img2.png (PNG copy)> <./figures/q4_initial_matches.png (PNG copy)> <./figures/q4_good_matches.png (PNG copy)> <./figures/q4_stitched_panorama.png (PNG copy)>] [4] (report.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
@@ -482,14 +482,14 @@ Package rerunfilecheck Info: File `report.out' has not changed.
  ) 
 Here is how much of TeX's memory you used:
  11504 strings out of 474479
- 188210 string characters out of 5738834
+ 188196 string characters out of 5738834
  1936542 words of memory out of 5000000
  33649 multiletter control sequences out of 15000+600000
  566197 words of font info for 65 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,8n,79p,374b,527s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\Savindu Dilshan\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1095.pk><C:/Users/Savindu Dilshan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/Savindu Dilshan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/Savindu Dilshan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/Savindu Dilshan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/Savindu Dilshan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/Savindu Dilshan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/Savindu Dilshan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/Savindu Dilshan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/Savindu Dilshan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/Savindu Dilshan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/Savindu Dilshan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on report.pdf (4 pages, 8847305 bytes).
+Output written on report.pdf (4 pages, 13347095 bytes).
 PDF statistics:
  139 PDF objects out of 1000 (max. 8388607)
  14 named destinations out of 1000 (max. 500000)

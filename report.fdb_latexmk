@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1760435036.35764 "c:/Users/Savindu Dilshan/Desktop/Github/Fitting-and-Alignment/report.tex" "report.pdf" "report" 1760435037.77197 0
+["pdflatex"] 1760487146.59285 "c:/Users/Savindu Dilshan/Desktop/Github/Fitting-and-Alignment/report.tex" "report.pdf" "report" 1760487147.96498 0
   "C:/Users/Savindu Dilshan/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1760435033 80909 eab91d9745dd2edfd62a31d53cd5fe15 ""
   "C:/Users/Savindu Dilshan/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1095.pk" 1760329101 12668 2c4f15fc0bb41285f8c40b4c0a27a610 ""
   "C:/Users/Savindu Dilshan/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1760329076 24230043 d98c52033ff842b48c6d4651724e9741 ""
@@ -92,7 +92,9 @@
   "C:/Users/Savindu Dilshan/AppData/Local/Programs/MiKTeX/tex/latex/rerunfilecheck/rerunfilecheck.sty" 1751104012 9684 a33a14b82ce60d6e77cb9be689d79ee6 ""
   "C:/Users/Savindu Dilshan/AppData/Local/Programs/MiKTeX/tex/latex/tocloft/tocloft.sty" 1578908763 37263 3e78d14f0f4b1a30560fea5e04de805d ""
   "C:/Users/Savindu Dilshan/AppData/Local/Programs/MiKTeX/tex/latex/url/url.sty" 1388490452 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
-  "c:/Users/Savindu Dilshan/Desktop/Github/Fitting-and-Alignment/report.tex" 1760434952 6268 6783f3331eb2702112d8913bd296fb6a ""
+  "c:/Users/Savindu Dilshan/Desktop/Github/Fitting-and-Alignment/report.tex" 1760487146 6266 d7c0630869cd007ff8d8dd151b34f01f ""
+  "car_on_billboard.png" 1760323215 4673624 b7475577f803ab4f816e325760d09944 ""
+  "dog_on_tv.png" 1760323227 123528 940e0b4a0b7ad42960f2856c29a1a9aa ""
   "figures/q1_sunflower.png" 1760323527 222075 b0d39c58169c9e1619f20e8e3b1e2c0b ""
   "figures/q2_noisy_data.png" 1760434249 52251 edc33823c20bda6b8f42887fbb17631e ""
   "figures/q2_ransac_final.png" 1760434250 300780 b776ec7f0c9dd43f209837c47b381dc0 ""
@@ -101,16 +103,14 @@
   "figures/q4_keypoints_img1.png" 1760434015 1095756 18bd1aad41440763317bf9ba1356a60b ""
   "figures/q4_keypoints_img2.png" 1760434015 1213871 fb6d9b6911155f9fdd8cf20bf78b8fb7 ""
   "figures/q4_stitched_panorama.png" 1760434016 1132444 2a028537f5d004f0f85aba6221243f32 ""
-  "images/bill_board.png" 1760281998 274609 8b20594dec90a8b985764ab41e968446 ""
-  "images/dog.png" 1760281517 15773 fa76f34bdc7b063bd3180dc7b4369004 ""
   "images/q1_code.png" 1760324028 34939 126689d28449f078b74d71f7f8234973 ""
   "images/q2_1_code.png" 1760324109 36567 1575f146f62f7ad10833fc5ed60a6e76 ""
   "images/q2_2_code.png" 1760324157 49912 392822f1652c6783230791266f31ae3e ""
   "images/q3_code.png" 1760324218 54871 fb8cad46feb4640efdcccb4a0d55d03b ""
-  "report.aux" 1760435037 1442 81933859c84ae654c187af119fe1c790 "pdflatex"
-  "report.out" 1760435037 920 c720f745e68d6a1a32b70ec2bd1f8d5e "pdflatex"
-  "report.tex" 1760434952 6268 6783f3331eb2702112d8913bd296fb6a ""
-  "report.toc" 1760435037 412 146465ba883afc3badc78445f25d31f8 "pdflatex"
+  "report.aux" 1760487147 1442 81933859c84ae654c187af119fe1c790 "pdflatex"
+  "report.out" 1760487147 920 c720f745e68d6a1a32b70ec2bd1f8d5e "pdflatex"
+  "report.tex" 1760487146 6266 d7c0630869cd007ff8d8dd151b34f01f ""
+  "report.toc" 1760487147 412 146465ba883afc3badc78445f25d31f8 "pdflatex"
   (generated)
   "report.aux"
   "report.log"
