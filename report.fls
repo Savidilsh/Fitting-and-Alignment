@@ -4,10 +4,10 @@ INPUT c:\Users\Savindu Dilshan\Desktop\Github\Fitting-and-Alignment\report.tex
 OUTPUT report.log
 INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\tex\latex\base\article.cls
 INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\tex\latex\base\article.cls
-INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\tex\latex\base\size11.clo
-INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\tex\latex\base\size11.clo
-INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\tex\latex\base\size11.clo
-INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmr10.tfm
+INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\tex\latex\base\size12.clo
+INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\tex\latex\base\size12.clo
+INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\tex\latex\base\size12.clo
+INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmr12.tfm
 INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\tex\latex\geometry\geometry.sty
 INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\tex\latex\geometry\geometry.sty
 INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\tex\latex\graphics\keyval.sty
@@ -108,6 +108,8 @@ INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\tex\generic\uniquec
 INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\tex\generic\uniquecounter\uniquecounter.sty
 INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\tex\latex\tocloft\tocloft.sty
 INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\tex\latex\tocloft\tocloft.sty
+INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\tex\latex\sectsty\sectsty.sty
+INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\tex\latex\sectsty\sectsty.sty
 INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\tex\latex\l3backend\l3backend-pdftex.def
 INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\tex\latex\l3backend\l3backend-pdftex.def
 INPUT .\report.aux
@@ -141,6 +143,17 @@ OUTPUT report.out
 INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmr17.tfm
 INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmbx12.tfm
 INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmr12.tfm
+INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmmi12.tfm
+INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmsy10.tfm
+INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmex10.tfm
+INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\tfm\public\amsfonts\cmextra\cmex7.tfm
+INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmbx12.tfm
+INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmr17.tfm
+INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmbx12.tfm
+INPUT .\report.toc
+INPUT .\report.toc
+INPUT report.toc
+INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmbx12.tfm
 INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmr8.tfm
 INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmr6.tfm
 INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmmi12.tfm
@@ -152,20 +165,12 @@ INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm
 INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmex10.tfm
 INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\tfm\public\amsfonts\cmextra\cmex8.tfm
 INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\tfm\public\amsfonts\cmextra\cmex7.tfm
-INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmbx12.tfm
-INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmr12.tfm
-INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmbx12.tfm
-INPUT .\report.toc
-INPUT .\report.toc
-INPUT report.toc
-INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmbx10.tfm
+OUTPUT report.toc
+INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmr10.tfm
+INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmtt10.tfm
 INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmmi10.tfm
 INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmsy10.tfm
 INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmex10.tfm
-OUTPUT report.toc
-INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmtt10.tfm
-INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\tfm\public\amsfonts\cmextra\cmex7.tfm
-INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\tfm\public\amsfonts\cmextra\cmex7.tfm
 INPUT .\images\q1_code.png
 INPUT .\images\q1_code.png
 INPUT .\images\q1_code.png
@@ -211,7 +216,7 @@ INPUT .\figures\q2_ransac_final.png
 INPUT .\figures\q2_ransac_final.png
 INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmbx8.tfm
 INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmbx6.tfm
-INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\tfm\jknappen\ec\tcrm1095.tfm
+INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\tfm\jknappen\ec\tcrm1200.tfm
 INPUT .\images\q3_code.png
 INPUT .\images\q3_code.png
 INPUT .\images\q3_code.png
@@ -233,7 +238,7 @@ INPUT .\dog_on_tv.png
 INPUT .\dog_on_tv.png
 INPUT .\dog_on_tv.png
 INPUT .\dog_on_tv.png
-INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmtt10.tfm
+INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmtt12.tfm
 INPUT .\figures\q4_keypoints_img1.png
 INPUT .\figures\q4_keypoints_img1.png
 INPUT .\figures\q4_keypoints_img1.png
@@ -272,16 +277,14 @@ INPUT .\figures\q4_stitched_panorama.png
 INPUT report.aux
 INPUT .\report.out
 INPUT .\report.out
-INPUT C:\Users\Savindu Dilshan\AppData\Local\MiKTeX\fonts\pk\ljfour\jknappen\ec\dpi600\tcrm1095.pk
-INPUT C:\Users\Savindu Dilshan\AppData\Local\MiKTeX\fonts\pk\ljfour\jknappen\ec\dpi600\tcrm1095.pk
-INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmbx10.pfb
-INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmbx10.pfb
+INPUT C:\Users\Savindu Dilshan\AppData\Local\MiKTeX\fonts\pk\ljfour\jknappen\ec\dpi600\tcrm1200.pk
+INPUT C:\Users\Savindu Dilshan\AppData\Local\MiKTeX\fonts\pk\ljfour\jknappen\ec\dpi600\tcrm1200.pk
 INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmbx12.pfb
 INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmbx12.pfb
 INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmex10.pfb
 INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmex10.pfb
-INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmmi10.pfb
-INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmmi10.pfb
+INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmmi12.pfb
+INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmmi12.pfb
 INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmmi8.pfb
 INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmmi8.pfb
 INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmr10.pfb
@@ -296,3 +299,5 @@ INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\type1\public\
 INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmsy10.pfb
 INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmtt10.pfb
 INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmtt10.pfb
+INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmtt12.pfb
+INPUT C:\Users\Savindu Dilshan\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmtt12.pfb

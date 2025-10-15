@@ -9,6 +9,9 @@ def select_points_callback(event, x, y, flags, param):
         points.append((x, y))
         # Draw a circle on the clicked point for visual feedback
         cv2.circle(param['image'], (x, y), 5, (0, 255, 0), -1)
+        # Draw point number
+        cv2.putText(param['image'], str(len(points)), (x+10, y+10), 
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
         cv2.imshow("Select 4 Points", param['image'])
 
 def warp_image(dest_img_path, src_img_path, output_filename):
@@ -26,7 +29,12 @@ def warp_image(dest_img_path, src_img_path, output_filename):
     
     cv2.namedWindow("Select 4 Points")
     cv2.setMouseCallback("Select 4 Points", select_points_callback, {'image': dest_clone})
-    print(f"Click 4 points on the destination image ('{dest_img_path}') clockwise.")
+    print(f"\nSelect 4 points for: {dest_img_path}")
+    print("Click 4 points CLOCKWISE starting from top-left:")
+    print("1. Top-left")
+    print("2. Top-right")
+    print("3. Bottom-right")
+    print("4. Bottom-left")
     
     while len(points) < 4:
         cv2.imshow("Select 4 Points", dest_clone)
@@ -41,6 +49,12 @@ def warp_image(dest_img_path, src_img_path, output_filename):
         dest_pts = np.array(points, dtype=np.float32)
         
         H, _ = cv2.findHomography(src_pts, dest_pts)
+        
+        # Print the homography matrix
+        print(f"\nHomography matrix for {dest_img_path}:")
+        np.set_printoptions(precision=6, suppress=True)
+        print(H)
+        
         warped = cv2.warpPerspective(src_img, H, (dest_img.shape[1], dest_img.shape[0]))
         
         mask = np.zeros_like(dest_img, dtype=np.uint8)
@@ -54,7 +68,8 @@ def warp_image(dest_img_path, src_img_path, output_filename):
 
         cv2.imwrite(output_filename, result)
         print(f"Success! Result saved as '{output_filename}'.")
-        cv2.imshow("Final Result", result)    
+        cv2.imshow("Final Result", result)
+        cv2.waitKey(0)    
     cv2.destroyAllWindows()
 
 if __name__ == '__main__':

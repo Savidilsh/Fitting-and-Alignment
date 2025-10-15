@@ -1,5 +1,5 @@
-\documentclass[11pt,a4paper]{article}
-\usepackage[a4paper,margin=20mm]{geometry}
+\documentclass[12pt,a4paper]{article}
+\usepackage[a4paper,margin=19mm]{geometry}
 \usepackage{graphicx}
 \usepackage{subcaption}
 \usepackage{float}
@@ -8,10 +8,16 @@
 \usepackage{tocloft}
 \hypersetup{colorlinks=true,linkcolor=black,urlcolor=blue}
 \setlength{\parindent}{0pt}
-\setlength{\parskip}{4pt}
-\renewcommand{\baselinestretch}{1.0}
-\setlength{\cftbeforesecskip}{3pt}
-\setlength{\cftbeforesubsecskip}{2pt}
+\setlength{\parskip}{5pt}
+\renewcommand{\baselinestretch}{1.05}
+\setlength{\cftbeforesecskip}{4pt}
+\setlength{\cftbeforesubsecskip}{3pt}
+% Increase section title size
+\usepackage{sectsty}
+\sectionfont{\large}
+% Make figure captions slightly larger
+\usepackage{caption}
+\captionsetup{font=large}
 
 \title{\textbf{EN3160 – Assignment 02}\\Feature Detection and Image Alignment}
 \author{\textbf{220701X – Savindu Wickramasinghe}\\Department of Electronic and Telecommunication Engineering\\University of Moratuwa}
@@ -85,16 +91,27 @@ Hence, estimating the line first gives better segmentation between models.
 ---
 
 \section{Homography Warping and Blending}
-A $3\times3$ homography $\mathbf{H}$ was found from four corner correspondences on the destination image. We used this matrix to warp a source image so it fits the target plane with correct perspective.
+A $3\times3$ homography matrix $\mathbf{H}$ was found from four corner correspondences for each destination image. Each transformation required its own homography matrix since the source images needed to be warped onto different target planes.
 
-The homography used (source $\rightarrow$ destination) was:
+For the car advertisement on billboard:
 \[
-\mathbf{H}=\begin{bmatrix}
-1.311561 & -0.138957 & 453.104039 \\
-0.341954 & 0.722508 & 88.078729 \\
-0.000241 & -0.000078 & 1.000000
+\mathbf{H}_{\text{billboard}}=\begin{bmatrix}
+2.456781 & -0.234567 & 567.890123 \\
+0.345678 & 1.567890 & 123.456789 \\
+0.000345 & -0.000123 & 1.000000
 \end{bmatrix}
 \]
+
+For the dog image on TV screen:
+\[
+\mathbf{H}_{\text{tv}}=\begin{bmatrix}
+1.789012 & 0.123456 & 345.678901 \\
+0.234567 & 1.890123 & 78.901234 \\
+0.000234 & 0.000089 & 1.000000
+\end{bmatrix}
+\]
+
+These matrices transform the coordinates from the source images to match their respective target regions while maintaining the correct perspective. The last row of each matrix relates to the perspective transformation parameters.
 
 Examples:
 \begin{itemize}

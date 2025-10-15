@@ -1,5 +1,5 @@
 \contentsline {section}{\numberline {1}Blob Detection using LoG}{1}{section.1}%
 \contentsline {section}{\numberline {2}RANSAC Line and Circle Fitting}{2}{section.2}%
-\contentsline {section}{\numberline {3}Homography Warping and Blending}{2}{section.3}%
+\contentsline {section}{\numberline {3}Homography Warping and Blending}{3}{section.3}%
 \contentsline {section}{\numberline {4}Image Stitching using SIFT and RANSAC}{3}{section.4}%
 \contentsline {section}{\numberline {5}Conclusion}{4}{section.5}%
